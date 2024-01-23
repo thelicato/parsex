@@ -1,0 +1,20 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-10 19:20 EEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.21s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 992 closed ports
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+25/tcp    filtered smtp
+80/tcp    open     http
+135/tcp   filtered msrpc
+139/tcp   filtered netbios-ssn
+445/tcp   filtered microsoft-ds
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+Aggressive OS guesses: Linux 5.0 (94%), Linux 5.4 (94%), Linux 5.0 - 5.4 (94%), HP P2000 G3 NAS device (93%), Linux 2.6.32 - 3.1 (92%), Linux 4.15 - 5.6 (92%), Linux 5.3 - 5.4 (92%), Linux 2.6.32 - 3.13 (92%), Linux 3.0 - 3.2 (92%), OpenWrt Kamikaze 7.09 (Linux 2.6.22) (92%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 13 hops
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 34.73 seconds

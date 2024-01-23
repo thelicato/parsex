@@ -1,0 +1,8 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-09 16:26 EEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.31s latency).
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap done:  1 IP address (1 host up) scanned in 4.50 seconds
