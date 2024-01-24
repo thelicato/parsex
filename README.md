@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="./logo.png?raw=true" width="400">
+	<img src="https://github.com/groundsec/parsecx/blob/main/logo.png?raw=true" width="400">
 </h1>
 
 <h4 align="center">Parse and extract key data across multiple security tools</h4>
