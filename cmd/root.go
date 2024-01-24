@@ -27,7 +27,10 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if input == "" {
 			fmt.Println("Error: Input is required.")
-			cmd.Help() // Display help text
+			err := cmd.Help() // Display help text
+			if err != nil {
+				panic(err)
+			}
 			return
 		}
 		if utils.CheckPathExists(input) {
