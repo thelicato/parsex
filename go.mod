@@ -1,4 +1,4 @@
-module github.com/groundsec/parsecx
+module github.com/thelicato/parsecx
 
 go 1.21.5
 

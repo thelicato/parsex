@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/groundsec/parsecx/pkg/logger"
-	"github.com/groundsec/parsecx/pkg/parsers"
-	"github.com/groundsec/parsecx/pkg/types"
-	"github.com/groundsec/parsecx/pkg/utils"
+	"github.com/thelicato/parsecx/pkg/logger"
+	"github.com/thelicato/parsecx/pkg/parsers"
+	"github.com/thelicato/parsecx/pkg/types"
+	"github.com/thelicato/parsecx/pkg/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

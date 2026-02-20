@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/groundsec/parsecx/cmd"
-	"github.com/groundsec/parsecx/pkg/utils"
+	"github.com/thelicato/parsecx/cmd"
+	"github.com/thelicato/parsecx/pkg/utils"
 )
 
 var version = "0.1.0"

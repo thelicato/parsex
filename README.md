@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="https://github.com/groundsec/parsecx/blob/main/logo.png?raw=true" width="400">
+	<img src="https://github.com/thelicato/parsecx/blob/main/logo.png?raw=true" width="400">
 </h1>
 
 <h4 align="center">Parse and extract key data across multiple security tools</h4>
@@ -44,7 +44,7 @@ This will display the help for the tool
    / .___/\__,_/_/  /____/\___/\___/_/|_|
   /_/
 
-v0.1.0 - https://github.com/groundsec/parsecx
+v0.1.0 - https://github.com/thelicato/parsecx
 
 Parse and extract key data across multiple security tools
 
@@ -61,11 +61,11 @@ Flags:
 Run the following command to install the latest version:
 
 ```
-go install github.com/groundsec/parsecx@latest
+go install github.com/thelicato/parsecx@latest
 ```
 
-Or you can simply grab an executable from the [Releases](https://github.com/groundsec/parsecx/releases) page.
+Or you can simply grab an executable from the [Releases](https://github.com/thelicato/parsecx/releases) page.
 
 ## 🪪 License
 
-_parsecx_ is made with 🖤 by the [GroundSec](https://groundsec.io) team and released under the [GPL3 LICENSE](https://github.com/groundsec/parsecx/blob/main/LICENSE).
+_parsecx_ is made with 🖤 and released under the [GPL3 LICENSE](https://github.com/thelicato/parsecx/blob/main/LICENSE).
