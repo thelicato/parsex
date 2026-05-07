@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="./logo.svg?raw=true" width="300">
+	<img src="./logo.svg?raw=true" width="200">
 </h1>
 
 <h4 align="center">Parse and extract key data across multiple security tools</h4>
