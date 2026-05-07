@@ -81,12 +81,16 @@ func CheckPathExists(path string) bool {
 	return !os.IsNotExist(err)
 }
 
-func ReadInput(filePath string) (string, error) {
+func ReadInput(filePath string) (content string, err error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return "", err
 	}
-	defer file.Close()
+	defer func() {
+		if closeErr := file.Close(); err == nil {
+			err = closeErr
+		}
+	}()
 
 	bytes, err := io.ReadAll(file)
 	if err != nil {
