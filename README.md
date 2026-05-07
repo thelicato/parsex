@@ -28,7 +28,7 @@ The goal is to obtain a tool that meets the requirements of the community, there
 
 This is the current list of compatible tools:
 
-- nmap
+- nmap (normal, XML, and grepable output)
 
 ## 📚 Usage
 

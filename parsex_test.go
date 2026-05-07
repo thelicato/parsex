@@ -33,9 +33,9 @@ func TestParseFile(t *testing.T) {
 		t.Fatalf("expected nmap standard parser, got %q", result.Parser)
 	}
 
-	parsed, ok := result.Data.(parsers.StandardNmapResult)
+	parsed, ok := result.Data.(parsers.NmapResult)
 	if !ok {
-		t.Fatalf("expected StandardNmapResult, got %T", result.Data)
+		t.Fatalf("expected NmapResult, got %T", result.Data)
 	}
 
 	if len(parsed.Hosts) != 1 {
