@@ -6,8 +6,7 @@ import (
 	"io"
 
 	"github.com/spf13/cobra"
-	"github.com/thelicato/parsex/pkg/parsers"
-	"github.com/thelicato/parsex/pkg/utils"
+	"github.com/thelicato/parsex"
 )
 
 type options struct {
@@ -34,10 +33,6 @@ func NewRootCommand() *cobra.Command {
 				return errors.New("input is required")
 			}
 
-			if !utils.CheckPathExists(opts.input) {
-				return fmt.Errorf("specified path does not exist: %s", opts.input)
-			}
-
 			return processFile(cmd.OutOrStdout(), opts.input)
 		},
 	}
@@ -48,30 +43,18 @@ func NewRootCommand() *cobra.Command {
 }
 
 func processFile(out io.Writer, filePath string) error {
-	content, err := utils.ReadInput(filePath)
+	result, err := parsex.ParseFile(filePath)
+	if errors.Is(err, parsex.ErrNoCompatibleParser) {
+		_, err = fmt.Fprintln(out, "No compatible parser found for the file.")
+		return err
+	}
 	if err != nil {
 		return err
 	}
 
-	for _, parser := range parsers.DefaultParsers() {
-		if !parser.IsCompatible(content) {
-			continue
-		}
-
-		parsedResult, err := parser.Parse(content)
-		if err != nil {
-			return fmt.Errorf("%s parser failed: %w", parser.Name(), err)
-		}
-
-		if _, err := fmt.Fprintf(out, "Parser %s is compatible!\n", parser.Name()); err != nil {
-			return err
-		}
-		if _, err := fmt.Fprintln(out, parsedResult); err != nil {
-			return err
-		}
-		return nil
+	if _, err := fmt.Fprintf(out, "Parser %s is compatible!\n", result.Parser); err != nil {
+		return err
 	}
-
-	_, err = fmt.Fprintln(out, "No compatible parser found for the file.")
+	_, err = fmt.Fprintln(out, result.Data)
 	return err
 }

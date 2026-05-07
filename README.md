@@ -23,6 +23,7 @@ The goal is to obtain a tool that meets the requirements of the community, there
 
 - Unified parsing
 - Streamlined workflow
+- CLI and library modes
 - Sample Files
 
 This is the current list of compatible tools:
@@ -30,6 +31,8 @@ This is the current list of compatible tools:
 - nmap
 
 ## 📚 Usage
+
+### CLI mode
 
 ```
 parsex -h
@@ -52,6 +55,38 @@ Usage:
 Flags:
   -h, --help           help for parsex
   -i, --input string   Input to parse
+```
+
+Parse a tool output file:
+
+```
+parsex -i samples/nmap7
+```
+
+### Library mode
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+
+	"github.com/thelicato/parsex"
+)
+
+func main() {
+	result, err := parsex.ParseFile("samples/nmap7")
+	if errors.Is(err, parsex.ErrNoCompatibleParser) {
+		fmt.Println("unsupported input")
+		return
+	}
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("parser=%s data=%#v\n", result.Parser, result.Data)
+}
 ```
 
 ## 🚀 Installation
