@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="https://github.com/thelicato/parsex/blob/main/logo.png?raw=true" width="400">
+	<img src="./logo.svg?raw=true" width="300">
 </h1>
 
 <h4 align="center">Parse and extract key data across multiple security tools</h4>
@@ -97,8 +97,8 @@ Run the following command to install the latest version:
 go install github.com/thelicato/parsex/cmd/parsex@latest
 ```
 
-Or you can simply grab an executable from the [Releases](https://github.com/thelicato/parsex/releases) page.
+Or you can simply grab an executable from the [Releases](./releases) page.
 
 ## 🪪 License
 
-_parsex_ is made with 🖤 and released under the [GPL3 LICENSE](https://github.com/thelicato/parsex/blob/main/LICENSE).
+_parsex_ is made with 🖤 and released under the [GPL3 LICENSE](./LICENSE).
