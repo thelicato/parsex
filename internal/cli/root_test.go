@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -9,7 +10,7 @@ import (
 )
 
 func TestRootCommandParsesInput(t *testing.T) {
-	cmd := NewRootCommand()
+	cmd := NewRootCommand("test")
 	output := bytes.Buffer{}
 	cmd.SetOut(&output)
 	cmd.SetArgs([]string{"-i", "../../samples/nmap7"})
@@ -18,8 +19,22 @@ func TestRootCommandParsesInput(t *testing.T) {
 		t.Fatalf("execute command: %v", err)
 	}
 
-	if !strings.Contains(output.String(), "Parser nmap standard is compatible!") {
-		t.Fatalf("expected parser output, got %q", output.String())
+	if !strings.Contains(output.String(), "\n  \"parser\": \"nmap standard\"") {
+		t.Fatalf("expected pretty JSON parser output, got %q", output.String())
+	}
+
+	var result struct {
+		Parser            string   `json:"parser"`
+		CompatibleParsers []string `json:"compatible_parsers"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &result); err != nil {
+		t.Fatalf("unmarshal output: %v", err)
+	}
+	if result.Parser != "nmap standard" {
+		t.Fatalf("expected nmap standard parser, got %q", result.Parser)
+	}
+	if len(result.CompatibleParsers) != 1 || result.CompatibleParsers[0] != "nmap standard" {
+		t.Fatalf("expected compatible parser list, got %#v", result.CompatibleParsers)
 	}
 }
 
@@ -29,7 +44,7 @@ func TestRootCommandNoCompatibleParser(t *testing.T) {
 		t.Fatalf("write input: %v", err)
 	}
 
-	cmd := NewRootCommand()
+	cmd := NewRootCommand("test")
 	output := bytes.Buffer{}
 	cmd.SetOut(&output)
 	cmd.SetArgs([]string{"-i", inputPath})

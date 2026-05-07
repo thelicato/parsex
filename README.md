@@ -41,12 +41,6 @@ parsex -h
 This will display the help for the tool
 
 ```
-░▀█▀░█░█░█▀▀░█░░░▀█▀░█▀▀░█▀█░▀█▀░█▀█
-░░█░░█▀█░█▀▀░█░░░░█░░█░░░█▀█░░█░░█░█
-░░▀░░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀
-
-v0.1.0 - https://github.com/thelicato/parsex
-
 Parse and extract key data across multiple security tools
 
 Usage:
@@ -55,6 +49,7 @@ Usage:
 Flags:
   -h, --help           help for parsex
   -i, --input string   Input to parse
+  -v, --version        version for parsex
 ```
 
 Parse a tool output file:
@@ -62,6 +57,10 @@ Parse a tool output file:
 ```
 parsex -i samples/nmap7
 ```
+
+CLI mode prints indented JSON. `parser` is the parser selected for the result, while
+`compatible_parsers` lists every parser that matched the input. If more than one
+parser matches, parsex uses the first parser in the configured parser order.
 
 ### Library mode
 

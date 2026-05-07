@@ -17,7 +17,7 @@ type NmapResult struct {
 	XMLOutputVersion string         `json:"xml_output_version,omitempty"`
 	ScanInfo         []NmapScanInfo `json:"scan_info,omitempty"`
 	Hosts            []NmapHost     `json:"hosts,omitempty"`
-	RunStats         NmapRunStats   `json:"run_stats,omitempty"`
+	RunStats         NmapRunStats   `json:"run_stats,omitempty,omitzero"`
 }
 
 type NmapScanInfo struct {
@@ -33,19 +33,19 @@ type NmapHost struct {
 	MacAddress  string           `json:"mac_address,omitempty"`
 	StartTime   string           `json:"start_time,omitempty"`
 	EndTime     string           `json:"end_time,omitempty"`
-	Status      NmapStatus       `json:"status,omitempty"`
+	Status      NmapStatus       `json:"status,omitempty,omitzero"`
 	Latency     string           `json:"latency,omitempty"`
 	Addresses   []NmapAddress    `json:"addresses,omitempty"`
 	Hostnames   []NmapHostname   `json:"hostnames,omitempty"`
 	Ports       []NmapPort       `json:"ports,omitempty"`
 	ExtraPorts  []NmapExtraPorts `json:"extra_ports,omitempty"`
 	Scripts     []NmapScript     `json:"scripts,omitempty"`
-	OS          NmapOS           `json:"os,omitempty"`
-	Uptime      NmapUptime       `json:"uptime,omitempty"`
+	OS          NmapOS           `json:"os,omitempty,omitzero"`
+	Uptime      NmapUptime       `json:"uptime,omitempty,omitzero"`
 	Distance    int              `json:"distance,omitempty"`
-	ServiceInfo NmapServiceInfo  `json:"service_info,omitempty"`
-	Trace       NmapTrace        `json:"trace,omitempty"`
-	Times       NmapTimes        `json:"times,omitempty"`
+	ServiceInfo NmapServiceInfo  `json:"service_info,omitempty,omitzero"`
+	Trace       NmapTrace        `json:"trace,omitempty,omitzero"`
+	Times       NmapTimes        `json:"times,omitempty,omitzero"`
 }
 
 type NmapStatus struct {

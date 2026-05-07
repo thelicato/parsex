@@ -23,6 +23,20 @@ func (p customParser) Parse(content string) (interface{}, error) {
 	return content, nil
 }
 
+type fallbackParser struct{}
+
+func (p fallbackParser) Name() string {
+	return "fallback"
+}
+
+func (p fallbackParser) IsCompatible(content string) bool {
+	return content == "custom input"
+}
+
+func (p fallbackParser) Parse(content string) (interface{}, error) {
+	return "fallback data", nil
+}
+
 func TestParseFile(t *testing.T) {
 	result, err := parsex.ParseFile("samples/nmap7")
 	if err != nil {
@@ -31,6 +45,9 @@ func TestParseFile(t *testing.T) {
 
 	if result.Parser != "nmap standard" {
 		t.Fatalf("expected nmap standard parser, got %q", result.Parser)
+	}
+	if len(result.CompatibleParsers) != 1 || result.CompatibleParsers[0] != "nmap standard" {
+		t.Fatalf("expected compatible parser list, got %#v", result.CompatibleParsers)
 	}
 
 	parsed, ok := result.Data.(parsers.NmapResult)
@@ -58,6 +75,31 @@ func TestParseWithCustomParsers(t *testing.T) {
 
 	if result.Parser != "custom" {
 		t.Fatalf("expected custom parser, got %q", result.Parser)
+	}
+}
+
+func TestParseWithMultipleCompatibleParsersUsesFirst(t *testing.T) {
+	result, err := parsex.Parse("custom input", parsex.WithParsers(customParser{}, fallbackParser{}))
+	if err != nil {
+		t.Fatalf("parse custom input: %v", err)
+	}
+
+	if result.Parser != "custom" {
+		t.Fatalf("expected first compatible parser, got %q", result.Parser)
+	}
+	if len(result.CompatibleParsers) != 2 {
+		t.Fatalf("expected two compatible parsers, got %#v", result.CompatibleParsers)
+	}
+	if result.CompatibleParsers[0] != "custom" || result.CompatibleParsers[1] != "fallback" {
+		t.Fatalf("unexpected compatible parser order: %#v", result.CompatibleParsers)
+	}
+	if result.Data != "custom input" {
+		t.Fatalf("expected first parser data, got %#v", result.Data)
+	}
+
+	compatibleParsers := parsex.CompatibleParsers("custom input", parsex.WithParsers(customParser{}, fallbackParser{}))
+	if len(compatibleParsers) != 2 || compatibleParsers[0] != "custom" || compatibleParsers[1] != "fallback" {
+		t.Fatalf("unexpected compatible parsers: %#v", compatibleParsers)
 	}
 }
 

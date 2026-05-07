@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -13,16 +14,17 @@ type options struct {
 	input string
 }
 
-func Execute() error {
-	return NewRootCommand().Execute()
+func Execute(version string) error {
+	return NewRootCommand(version).Execute()
 }
 
-func NewRootCommand() *cobra.Command {
+func NewRootCommand(version string) *cobra.Command {
 	opts := options{}
 
 	rootCmd := &cobra.Command{
 		Use:           "parsex",
 		Short:         "Parse and extract key data across multiple security tools",
+		Version:       version,
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -52,9 +54,7 @@ func processFile(out io.Writer, filePath string) error {
 		return err
 	}
 
-	if _, err := fmt.Fprintf(out, "Parser %s is compatible!\n", result.Parser); err != nil {
-		return err
-	}
-	_, err = fmt.Fprintln(out, result.Data)
-	return err
+	encoder := json.NewEncoder(out)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(result)
 }
