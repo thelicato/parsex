@@ -22,7 +22,7 @@ func TestRootCommandParsesInput(t *testing.T) {
 		t.Fatalf("execute command: %v", err)
 	}
 
-	if !strings.Contains(output.String(), "\n  \"parser\": \"nmap standard\"") {
+	if !strings.Contains(output.String(), "\n  \"parser\": \"nmap-standard\"") {
 		t.Fatalf("expected pretty JSON parser output, got %q", output.String())
 	}
 
@@ -33,10 +33,10 @@ func TestRootCommandParsesInput(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &result); err != nil {
 		t.Fatalf("unmarshal output: %v", err)
 	}
-	if result.Parser != "nmap standard" {
-		t.Fatalf("expected nmap standard parser, got %q", result.Parser)
+	if result.Parser != "nmap-standard" {
+		t.Fatalf("expected nmap-standard parser, got %q", result.Parser)
 	}
-	if len(result.CompatibleParsers) != 1 || result.CompatibleParsers[0] != "nmap standard" {
+	if len(result.CompatibleParsers) != 1 || result.CompatibleParsers[0] != "nmap-standard" {
 		t.Fatalf("expected compatible parser list, got %#v", result.CompatibleParsers)
 	}
 }
@@ -57,7 +57,7 @@ func TestRootCommandUsesSelectedParser(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &result); err != nil {
 		t.Fatalf("unmarshal output: %v", err)
 	}
-	if result.Parser != "nmap standard" {
+	if result.Parser != "nmap-standard" {
 		t.Fatalf("expected selected parser, got %q", result.Parser)
 	}
 }

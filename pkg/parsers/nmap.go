@@ -209,7 +209,7 @@ type StandardNmapPort = NmapPort
 type NmapXMLParser struct{}
 
 func (p NmapXMLParser) Name() string {
-	return "nmap XML"
+	return "nmap-xml"
 }
 
 func (p NmapXMLParser) IsCompatible(content string) bool {
@@ -228,7 +228,7 @@ func (p NmapXMLParser) Parse(content string) (interface{}, error) {
 type NmapGrepableParser struct{}
 
 func (p NmapGrepableParser) Name() string {
-	return "nmap grepable"
+	return "nmap-grepable"
 }
 
 func (p NmapGrepableParser) IsCompatible(content string) bool {
@@ -242,7 +242,7 @@ func (p NmapGrepableParser) Parse(content string) (interface{}, error) {
 type StandardNmapParser struct{}
 
 func (p StandardNmapParser) Name() string {
-	return "nmap standard"
+	return "nmap-standard"
 }
 
 func (p StandardNmapParser) IsCompatible(content string) bool {

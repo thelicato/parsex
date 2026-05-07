@@ -13,5 +13,7 @@ func DefaultParsers() []Parser {
 		NmapXMLParser{},
 		NmapGrepableParser{},
 		StandardNmapParser{},
+		NucleiJSONParser{},
+		NucleiStandardParser{},
 	}
 }

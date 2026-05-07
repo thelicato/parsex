@@ -28,7 +28,8 @@ The goal is to obtain a tool that meets the requirements of the community, there
 
 This is the current list of compatible tools:
 
-- nmap (normal, XML, and grepable output)
+- nmap (`nmap-standard`, `nmap-xml`, `nmap-grepable`)
+- nuclei (`nuclei-standard`, `nuclei-json` for JSON and JSONL output)
 
 ## 📚 Usage
 
@@ -69,8 +70,9 @@ CLI mode prints indented JSON. `parser` is the parser selected for the result, w
 `compatible_parsers` lists every parser that matched the input. If more than one
 parser matches, parsex uses the first parser in the configured parser order unless
 `--parser` selects one of the compatible parsers. Parser names are matched
-case-insensitively, and spaces, dashes, and underscores are equivalent. If the
-selected parser is not compatible with the input, parsex returns an error.
+case-insensitively, and spaces, dashes, and underscores are equivalent. Parser
+names are emitted as lowercase dash-separated identifiers. If the selected parser is
+not compatible with the input, parsex returns an error.
 
 ### Library mode
 
