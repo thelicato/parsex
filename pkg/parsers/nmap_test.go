@@ -1,35 +1,32 @@
 package parsers_test
 
 import (
-	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/thelicato/parsex/pkg/parsers"
-	"github.com/thelicato/parsex/pkg/types"
-	"github.com/thelicato/parsex/pkg/utils"
 )
 
 func TestXMLParser(t *testing.T) {
-
 	xmlFiles := []string{"../../samples/nmap1.xml", "../../samples/nmap15.xml"}
-	parser := types.Parser(parsers.NmapXMLParser{})
+	parser := parsers.Parser(parsers.NmapXMLParser{})
 
 	for _, xmlFile := range xmlFiles {
-		content, err := utils.ReadInput(xmlFile)
-		if err != nil {
-			panic(err)
-		}
+		t.Run(filepath.Base(xmlFile), func(t *testing.T) {
+			content, err := os.ReadFile(xmlFile)
+			if err != nil {
+				t.Fatalf("read sample: %v", err)
+			}
 
-		if !parser.IsCompatible(content) {
-			panic("Incompatible file")
-		}
+			if !parser.IsCompatible(string(content)) {
+				t.Fatal("expected compatible file")
+			}
 
-		parsedResult, err := parser.Parse(content)
-		fmt.Println(parsedResult)
-		if err != nil {
-			panic(err)
-		}
-
+			if _, err := parser.Parse(string(content)); err != nil {
+				t.Fatalf("parse sample: %v", err)
+			}
+		})
 	}
 }
 
@@ -52,23 +49,22 @@ func TestStandardParser(t *testing.T) {
 		"../../samples/nmap17",
 		"../../samples/nmap18",
 		"../../samples/nmap19"}
-	parser := types.Parser(parsers.StandardNmapParser{})
+	parser := parsers.Parser(parsers.StandardNmapParser{})
 
 	for _, xmlFile := range xmlFiles {
-		content, err := utils.ReadInput(xmlFile)
-		if err != nil {
-			panic(err)
-		}
+		t.Run(filepath.Base(xmlFile), func(t *testing.T) {
+			content, err := os.ReadFile(xmlFile)
+			if err != nil {
+				t.Fatalf("read sample: %v", err)
+			}
 
-		if !parser.IsCompatible(content) {
-			panic("Incompatible file")
-		}
+			if !parser.IsCompatible(string(content)) {
+				t.Fatal("expected compatible file")
+			}
 
-		parsedResult, err := parser.Parse(content)
-		fmt.Println(parsedResult)
-		if err != nil {
-			panic(err)
-		}
-
+			if _, err := parser.Parse(string(content)); err != nil {
+				t.Fatalf("parse sample: %v", err)
+			}
+		})
 	}
 }

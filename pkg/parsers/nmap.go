@@ -6,8 +6,7 @@ import (
 	"strings"
 )
 
-type NmapXMLParser struct {
-}
+type NmapXMLParser struct{}
 
 // NmapScanResult represents the top-level structure of an Nmap XML output
 type NmapScanResult struct {
@@ -19,14 +18,13 @@ type NmapScanResult struct {
 type Host struct {
 	Addresses  []Address `xml:"address"`
 	Ports      []Port    `xml:"ports>port"`
-	MacAddress string    // Add this field for MAC address
+	MacAddress string
 }
 
 // Address represents an address element for a host
 type Address struct {
 	Addr     string `xml:"addr,attr"`
 	AddrType string `xml:"addrtype,attr"`
-	// Add more fields as necessary
 }
 
 // Port represents a port element for a host
@@ -35,19 +33,16 @@ type Port struct {
 	Protocol string  `xml:"protocol,attr"`
 	State    State   `xml:"state"`
 	Service  Service `xml:"service"`
-	// Add more fields as necessary
 }
 
 // State represents the state of a port
 type State struct {
 	State string `xml:"state,attr"`
-	// Add more fields as necessary
 }
 
 // Service represents the service running on a port
 type Service struct {
 	Name string `xml:"name,attr"`
-	// Add more fields as necessary
 }
 
 func (p NmapXMLParser) Name() string {
@@ -77,10 +72,10 @@ func (p NmapXMLParser) Parse(content string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	for _, host := range result.Hosts {
-		for _, address := range host.Addresses {
+	for hostIndex := range result.Hosts {
+		for _, address := range result.Hosts[hostIndex].Addresses {
 			if address.AddrType == "mac" {
-				host.MacAddress = address.Addr
+				result.Hosts[hostIndex].MacAddress = address.Addr
 				break
 			}
 		}
@@ -99,7 +94,7 @@ type GrepableNmapResult struct {
 type GrepableHost struct {
 	IP         string
 	Hostname   string
-	MacAddress string // Add this field for MAC address
+	MacAddress string
 	Ports      []string
 }
 
@@ -116,17 +111,15 @@ func (p NmapGrepableParser) Parse(content string) (interface{}, error) {
 	var currentHost *GrepableHost
 
 	lines := strings.Split(content, "\n")
-	hostRegex := regexp.MustCompile(`Host: (\S+) \((.*?)\)`)                // Matches IP and Hostname
-	portRegex := regexp.MustCompile(`Ports: (\d+)/(\w+)/(\w+)/(\w+)/(\S+)`) // Matches Port information
-	macRegex := regexp.MustCompile(`MAC Address: ([\dA-Fa-f:.]+) \((.+)\)`) // Matches MAC address
+	hostRegex := regexp.MustCompile(`Host: (\S+) \((.*?)\)`)
+	portRegex := regexp.MustCompile(`Ports: (\d+)/(\w+)/(\w+)/(\w+)/(\S+)`)
+	macRegex := regexp.MustCompile(`MAC Address: ([\dA-Fa-f:.]+) \((.+)\)`)
 
 	for _, line := range lines {
 		if hostMatch := hostRegex.FindStringSubmatch(line); hostMatch != nil {
-			// Process the previous host, if any
 			if currentHost != nil {
 				result.Hosts = append(result.Hosts, *currentHost)
 			}
-			// Start a new host
 			currentHost = &GrepableHost{
 				IP:       hostMatch[1],
 				Hostname: hostMatch[2],
@@ -146,7 +139,6 @@ func (p NmapGrepableParser) Parse(content string) (interface{}, error) {
 		}
 	}
 
-	// Append the last host if it exists
 	if currentHost != nil {
 		result.Hosts = append(result.Hosts, *currentHost)
 	}
@@ -160,7 +152,7 @@ type StandardNmapResult struct {
 
 type StandardNmapHost struct {
 	IP         string
-	MacAddress string // Add this field for MAC address
+	MacAddress string
 	Ports      []StandardNmapPort
 }
 
@@ -177,9 +169,6 @@ func (p StandardNmapParser) Name() string {
 }
 
 func (p StandardNmapParser) IsCompatible(content string) bool {
-	// Implement a check to see if this is a standard Nmap output.
-	// This can be tricky as standard output does not have a unique identifier.
-	// You might check for common phrases or formats found in standard output.
 	return strings.Contains(content, "Nmap scan report for")
 }
 
@@ -193,27 +182,24 @@ func (p StandardNmapParser) Parse(content string) (interface{}, error) {
 	macRegex := regexp.MustCompile(`MAC Address: ([\dA-Fa-f:.]+)`)
 
 	for _, line := range lines {
-		// Check if the line indicates a new host
 		if hostMatch := hostRegex.FindStringSubmatch(line); hostMatch != nil {
-			// Found a new host, process the previous host, if any
 			if currentHost != nil {
 				result.Hosts = append(result.Hosts, *currentHost)
 			}
-			// Start a new host
 			currentHost = &StandardNmapHost{
 				IP: hostMatch[1],
 			}
 			continue
 		}
 
-		// Check if the line indicates a port
 		if portMatch := portRegex.FindStringSubmatch(line); portMatch != nil {
 			if strings.HasPrefix(line, "Discovered open port") {
-				// Skip lines that start with "Discovered open port"
+				continue
+			}
+			if currentHost == nil {
 				continue
 			}
 
-			// Found a port, add it to the current host
 			currentHost.Ports = append(currentHost.Ports, StandardNmapPort{
 				Port:    portMatch[1],
 				State:   portMatch[3],
@@ -228,7 +214,6 @@ func (p StandardNmapParser) Parse(content string) (interface{}, error) {
 		}
 	}
 
-	// Append the last host if it exists
 	if currentHost != nil {
 		result.Hosts = append(result.Hosts, *currentHost)
 	}

@@ -59,7 +59,7 @@ Flags:
 Run the following command to install the latest version:
 
 ```
-go install github.com/thelicato/parsex@latest
+go install github.com/thelicato/parsex/cmd/parsex@latest
 ```
 
 Or you can simply grab an executable from the [Releases](https://github.com/thelicato/parsex/releases) page.
