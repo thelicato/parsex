@@ -11,7 +11,8 @@ import (
 )
 
 type options struct {
-	input string
+	input  string
+	parser string
 }
 
 func Execute(version string) error {
@@ -35,17 +36,18 @@ func NewRootCommand(version string) *cobra.Command {
 				return errors.New("input is required")
 			}
 
-			return processFile(cmd.OutOrStdout(), opts.input)
+			return processFile(cmd.OutOrStdout(), opts.input, opts.parser)
 		},
 	}
 	rootCmd.CompletionOptions.HiddenDefaultCmd = true
 	rootCmd.PersistentFlags().StringVarP(&opts.input, "input", "i", "", "Input to parse")
+	rootCmd.PersistentFlags().StringVarP(&opts.parser, "parser", "p", "", "Parser to use")
 
 	return rootCmd
 }
 
-func processFile(out io.Writer, filePath string) error {
-	result, err := parsex.ParseFile(filePath)
+func processFile(out io.Writer, filePath string, parserName string) error {
+	result, err := parsex.ParseFile(filePath, parsex.WithParserName(parserName))
 	if errors.Is(err, parsex.ErrNoCompatibleParser) {
 		_, err = fmt.Fprintln(out, "No compatible parser found for the file.")
 		return err

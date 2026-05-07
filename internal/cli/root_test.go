@@ -3,10 +3,13 @@ package cli
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/thelicato/parsex"
 )
 
 func TestRootCommandParsesInput(t *testing.T) {
@@ -35,6 +38,39 @@ func TestRootCommandParsesInput(t *testing.T) {
 	}
 	if len(result.CompatibleParsers) != 1 || result.CompatibleParsers[0] != "nmap standard" {
 		t.Fatalf("expected compatible parser list, got %#v", result.CompatibleParsers)
+	}
+}
+
+func TestRootCommandUsesSelectedParser(t *testing.T) {
+	cmd := NewRootCommand("test")
+	output := bytes.Buffer{}
+	cmd.SetOut(&output)
+	cmd.SetArgs([]string{"-i", "../../samples/nmap7", "--parser", "nmap-standard"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("execute command: %v", err)
+	}
+
+	var result struct {
+		Parser string `json:"parser"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &result); err != nil {
+		t.Fatalf("unmarshal output: %v", err)
+	}
+	if result.Parser != "nmap standard" {
+		t.Fatalf("expected selected parser, got %q", result.Parser)
+	}
+}
+
+func TestRootCommandRejectsIncompatibleSelectedParser(t *testing.T) {
+	cmd := NewRootCommand("test")
+	output := bytes.Buffer{}
+	cmd.SetOut(&output)
+	cmd.SetArgs([]string{"-i", "../../samples/nmap7", "--parser", "nmap-xml"})
+
+	err := cmd.Execute()
+	if !errors.Is(err, parsex.ErrParserNotCompatible) {
+		t.Fatalf("expected ErrParserNotCompatible, got %v", err)
 	}
 }
 

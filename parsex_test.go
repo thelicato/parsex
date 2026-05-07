@@ -37,6 +37,20 @@ func (p fallbackParser) Parse(content string) (interface{}, error) {
 	return "fallback data", nil
 }
 
+type incompatibleParser struct{}
+
+func (p incompatibleParser) Name() string {
+	return "incompatible"
+}
+
+func (p incompatibleParser) IsCompatible(content string) bool {
+	return content == "other input"
+}
+
+func (p incompatibleParser) Parse(content string) (interface{}, error) {
+	return content, nil
+}
+
 func TestParseFile(t *testing.T) {
 	result, err := parsex.ParseFile("samples/nmap7")
 	if err != nil {
@@ -100,6 +114,61 @@ func TestParseWithMultipleCompatibleParsersUsesFirst(t *testing.T) {
 	compatibleParsers := parsex.CompatibleParsers("custom input", parsex.WithParsers(customParser{}, fallbackParser{}))
 	if len(compatibleParsers) != 2 || compatibleParsers[0] != "custom" || compatibleParsers[1] != "fallback" {
 		t.Fatalf("unexpected compatible parsers: %#v", compatibleParsers)
+	}
+}
+
+func TestParseWithSelectedParserUsesRequestedCompatibleParser(t *testing.T) {
+	result, err := parsex.Parse(
+		"custom input",
+		parsex.WithParsers(customParser{}, fallbackParser{}),
+		parsex.WithParserName("fallback"),
+	)
+	if err != nil {
+		t.Fatalf("parse custom input: %v", err)
+	}
+
+	if result.Parser != "fallback" {
+		t.Fatalf("expected selected parser, got %q", result.Parser)
+	}
+	if result.Data != "fallback data" {
+		t.Fatalf("expected selected parser data, got %#v", result.Data)
+	}
+	if len(result.CompatibleParsers) != 2 || result.CompatibleParsers[0] != "custom" || result.CompatibleParsers[1] != "fallback" {
+		t.Fatalf("unexpected compatible parsers: %#v", result.CompatibleParsers)
+	}
+}
+
+func TestParseWithSelectedParserAcceptsNormalizedName(t *testing.T) {
+	content, err := os.ReadFile("samples/nmap7")
+	if err != nil {
+		t.Fatalf("read sample: %v", err)
+	}
+
+	result, err := parsex.Parse(string(content), parsex.WithParserName("nmap-standard"))
+	if err != nil {
+		t.Fatalf("parse with selected parser: %v", err)
+	}
+
+	if result.Parser != "nmap standard" {
+		t.Fatalf("expected nmap standard parser, got %q", result.Parser)
+	}
+}
+
+func TestParseWithSelectedParserRejectsUnknownParser(t *testing.T) {
+	_, err := parsex.Parse("custom input", parsex.WithParsers(customParser{}), parsex.WithParserName("missing"))
+	if !errors.Is(err, parsex.ErrParserNotFound) {
+		t.Fatalf("expected ErrParserNotFound, got %v", err)
+	}
+}
+
+func TestParseWithSelectedParserRejectsIncompatibleParser(t *testing.T) {
+	_, err := parsex.Parse(
+		"custom input",
+		parsex.WithParsers(customParser{}, incompatibleParser{}),
+		parsex.WithParserName("incompatible"),
+	)
+	if !errors.Is(err, parsex.ErrParserNotCompatible) {
+		t.Fatalf("expected ErrParserNotCompatible, got %v", err)
 	}
 }
 

@@ -3,6 +3,7 @@ package parsex
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	parserpkg "github.com/thelicato/parsex/pkg/parsers"
 	"github.com/thelicato/parsex/pkg/utils"
@@ -10,6 +11,12 @@ import (
 
 // ErrNoCompatibleParser is returned when no registered parser recognizes the input.
 var ErrNoCompatibleParser = errors.New("no compatible parser found")
+
+// ErrParserNotFound is returned when a requested parser is not registered.
+var ErrParserNotFound = errors.New("parser not found")
+
+// ErrParserNotCompatible is returned when a requested parser does not recognize the input.
+var ErrParserNotCompatible = errors.New("parser is not compatible with input")
 
 // Parser is implemented by every supported security tool output parser.
 type Parser = parserpkg.Parser
@@ -22,7 +29,8 @@ type Result struct {
 }
 
 type config struct {
-	parsers []Parser
+	parsers    []Parser
+	parserName string
 }
 
 // Option customizes parsing behavior.
@@ -43,6 +51,13 @@ func WithParsers(parsers ...Parser) Option {
 	})
 }
 
+// WithParserName selects one registered parser by name.
+func WithParserName(name string) Option {
+	return optionFunc(func(cfg *config) {
+		cfg.parserName = strings.TrimSpace(name)
+	})
+}
+
 // DefaultParsers returns the built-in parser list.
 func DefaultParsers() []Parser {
 	return parserpkg.DefaultParsers()
@@ -54,15 +69,37 @@ func CompatibleParsers(content string, opts ...Option) []string {
 	return parserNames(findCompatibleParsers(content, cfg.parsers))
 }
 
-// Parse detects compatible parsers and parses the content with the first match.
+// Parse detects compatible parsers and parses the content with the selected parser.
 func Parse(content string, opts ...Option) (Result, error) {
 	cfg := newConfig(opts...)
+
+	if cfg.parserName != "" && findParserByName(cfg.parserName, cfg.parsers) == nil {
+		return Result{}, fmt.Errorf(
+			"%w: %s; available parsers: %s",
+			ErrParserNotFound,
+			cfg.parserName,
+			strings.Join(parserNames(cfg.parsers), ", "),
+		)
+	}
+
 	compatibleParsers := findCompatibleParsers(content, cfg.parsers)
 	if len(compatibleParsers) == 0 {
 		return Result{}, ErrNoCompatibleParser
 	}
 
 	parser := compatibleParsers[0]
+	if cfg.parserName != "" {
+		parser = findParserByName(cfg.parserName, compatibleParsers)
+		if parser == nil {
+			return Result{}, fmt.Errorf(
+				"%w: %s; compatible parsers: %s",
+				ErrParserNotCompatible,
+				cfg.parserName,
+				strings.Join(parserNames(compatibleParsers), ", "),
+			)
+		}
+	}
+
 	data, err := parser.Parse(content)
 	if err != nil {
 		return Result{}, fmt.Errorf("%s parser failed: %w", parser.Name(), err)
@@ -106,10 +143,25 @@ func findCompatibleParsers(content string, parsers []Parser) []Parser {
 	return compatibleParsers
 }
 
+func findParserByName(name string, parsers []Parser) Parser {
+	normalizedName := normalizeParserName(name)
+	for _, parser := range parsers {
+		if normalizeParserName(parser.Name()) == normalizedName {
+			return parser
+		}
+	}
+	return nil
+}
+
 func parserNames(parsers []Parser) []string {
 	names := make([]string, 0, len(parsers))
 	for _, parser := range parsers {
 		names = append(names, parser.Name())
 	}
 	return names
+}
+
+func normalizeParserName(name string) string {
+	name = strings.NewReplacer("-", " ", "_", " ").Replace(name)
+	return strings.Join(strings.Fields(strings.ToLower(name)), " ")
 }

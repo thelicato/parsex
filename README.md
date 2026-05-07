@@ -47,9 +47,10 @@ Usage:
   parsex [flags]
 
 Flags:
-  -h, --help           help for parsex
-  -i, --input string   Input to parse
-  -v, --version        version for parsex
+  -h, --help            help for parsex
+  -i, --input string    Input to parse
+  -p, --parser string   Parser to use
+  -v, --version         version for parsex
 ```
 
 Parse a tool output file:
@@ -58,9 +59,18 @@ Parse a tool output file:
 parsex -i samples/nmap7
 ```
 
+Select a specific parser when more than one parser is compatible:
+
+```
+parsex -i samples/nmap7 --parser nmap-standard
+```
+
 CLI mode prints indented JSON. `parser` is the parser selected for the result, while
 `compatible_parsers` lists every parser that matched the input. If more than one
-parser matches, parsex uses the first parser in the configured parser order.
+parser matches, parsex uses the first parser in the configured parser order unless
+`--parser` selects one of the compatible parsers. Parser names are matched
+case-insensitively, and spaces, dashes, and underscores are equivalent. If the
+selected parser is not compatible with the input, parsex returns an error.
 
 ### Library mode
 
@@ -75,7 +85,7 @@ import (
 )
 
 func main() {
-	result, err := parsex.ParseFile("samples/nmap7")
+	result, err := parsex.ParseFile("samples/nmap7", parsex.WithParserName("nmap-standard"))
 	if errors.Is(err, parsex.ErrNoCompatibleParser) {
 		fmt.Println("unsupported input")
 		return
