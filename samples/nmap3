@@ -1,0 +1,22 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-16 20:19 CET
+Nmap scan report for cast.lan (192.168.10.121)
+Host is up (0.048s latency).
+Not shown: 981 closed ports
+PORT     STATE    SERVICE
+21/tcp   open     ftp
+22/tcp   open     ssh
+25/tcp   open     smtp
+53/tcp   open     domain
+80/tcp   open     http
+110/tcp  open     pop3
+143/tcp  open     imap
+443/tcp  open     https
+587/tcp  open     submission
+993/tcp  open     imaps
+995/tcp  open     pop3s
+1025/tcp open     NFS-or-IIS
+1080/tcp open     socks
+8080/tcp open     http-proxy
+8081/tcp open     blackice-icecap
+
+Nmap done: 1 IP address (1 host up) scanned in 1.78 seconds

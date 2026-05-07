@@ -1,0 +1,57 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-24 11:33 IST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.26s latency).Not shown: 989 closed ports
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+25/tcp    filtered smtp
+80/tcp    open     http
+255/tcp   filtered unknown
+1027/tcp  filtered IIS
+5910/tcp  filtered cm
+9929/tcp  open     nping-echo
+18988/tcp filtered unknown
+31337/tcp open     Elite
+32777/tcp filtered sometimes-rpc17
+49155/tcp filtered unknown
+
+Nmap scan report for thirdmode.com (45.33.32.157)
+Host is up (0.27s latency).
+Not shown: 995 closed ports
+PORT    STATE    SERVICE
+22/tcp  open     ssh
+25/tcp  filtered smtp
+80/tcp  open     http
+443/tcp open     https
+873/tcp open     rsync
+
+Nmap scan report for li982-158.members.linode.com (45.33.32.158)
+Host is up (0.25s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+80/tcp  open  http
+443/tcp open  https
+
+Nmap scan report for li982-159.members.linode.com (45.33.32.159)
+Host is up (0.72s latency).
+Not shown: 983 closed ports
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+25/tcp    filtered smtp
+80/tcp    open     http
+264/tcp   filtered bgmp
+311/tcp   filtered asip-webadmin
+888/tcp   filtered accessbuilder
+1027/tcp  filtered IIS
+1839/tcp  filtered netopia-vo1
+3905/tcp  filtered mupdate
+4444/tcp  filtered krb524
+7402/tcp  filtered rtps-dd-mt
+7676/tcp  filtered imqbrokerd
+8087/tcp  filtered simplifymedia
+10025/tcp filtered unknown
+10566/tcp filtered unknown
+30951/tcp filtered unknown
+32784/tcp filtered unknown
+
+Nmap done: 4 IP addresses (4 hosts up) scanned in 378.70 seconds

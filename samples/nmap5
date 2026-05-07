@@ -1,0 +1,7 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-09 16:01 EEST
+Nmap scan report for 192.168.43.1
+Host is up (0.0056s latency).
+Not shown: 999 closed ports
+PORT  STATE SERVICE
+53/tcp open  domain
+MAC Address: 80:35:C1:2C:7C:30 (Xiaomi Communications)

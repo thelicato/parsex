@@ -1,0 +1,3 @@
+[INF] Current nuclei version: v3.8.0
+[exposed-git-config] [http] [medium] https://example.com/.git/config [repositoryformatversion = 0]
+[tech-detect] [http] [info] https://example.org [nginx]
