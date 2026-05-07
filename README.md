@@ -66,13 +66,7 @@ Select a specific parser when more than one parser is compatible:
 parsex -i samples/nmap7 --parser nmap-standard
 ```
 
-CLI mode prints indented JSON. `parser` is the parser selected for the result, while
-`compatible_parsers` lists every parser that matched the input. If more than one
-parser matches, parsex uses the first parser in the configured parser order unless
-`--parser` selects one of the compatible parsers. Parser names are matched
-case-insensitively, and spaces, dashes, and underscores are equivalent. Parser
-names are emitted as lowercase dash-separated identifiers. If the selected parser is
-not compatible with the input, parsex returns an error.
+CLI mode prints indented JSON. `parser` is the parser selected for the result, while `compatible_parsers` lists every parser that matched the input. If more than one parser matches, parsex uses the first parser in the configured parser order unless `--parser` selects one of the compatible parsers. Parser names are matched case-insensitively, and spaces, dashes, and underscores are equivalent. Parser names are emitted as lowercase dash-separated identifiers. If the selected parser is not compatible with the input, parsex returns an error.
 
 ### Library mode
 
