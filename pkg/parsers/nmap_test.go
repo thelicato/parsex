@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/thelicato/parsecx/pkg/parsers"
-	"github.com/thelicato/parsecx/pkg/types"
-	"github.com/thelicato/parsecx/pkg/utils"
+	"github.com/thelicato/parsex/pkg/parsers"
+	"github.com/thelicato/parsex/pkg/types"
+	"github.com/thelicato/parsex/pkg/utils"
 )
 
 func TestXMLParser(t *testing.T) {

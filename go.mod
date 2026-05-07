@@ -1,4 +1,4 @@
-module github.com/thelicato/parsecx
+module github.com/thelicato/parsex
 
 go 1.25.0
 

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/thelicato/parsecx/pkg/logger"
-	"github.com/thelicato/parsecx/pkg/parsers"
-	"github.com/thelicato/parsecx/pkg/types"
-	"github.com/thelicato/parsecx/pkg/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/thelicato/parsex/pkg/logger"
+	"github.com/thelicato/parsex/pkg/parsers"
+	"github.com/thelicato/parsex/pkg/types"
+	"github.com/thelicato/parsex/pkg/utils"
 )
 
 var input string
@@ -22,7 +22,7 @@ func completionCmd() *cobra.Command {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "parsecx",
+	Use:   "parsex",
 	Short: "Parse and extract key data across multiple security tools",
 	Run: func(cmd *cobra.Command, args []string) {
 		if input == "" {

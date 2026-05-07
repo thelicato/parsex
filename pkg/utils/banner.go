@@ -8,7 +8,7 @@ func Banner(version string) {
 ░░█░░█▀█░█▀▀░█░░░░█░░█░░░█▀█░░█░░█░█
 ░░▀░░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀
 
-v%s - https://github.com/thelicato/parsecx
+v%s - https://github.com/thelicato/parsex
 
 `
 	fmt.Printf(banner, version)
