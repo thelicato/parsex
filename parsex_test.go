@@ -97,6 +97,28 @@ func TestParseFileNucleiJSON(t *testing.T) {
 	}
 }
 
+func TestParseFileFFUFJSON(t *testing.T) {
+	result, err := parsex.ParseFile("samples/ffuf-json")
+	if err != nil {
+		t.Fatalf("parse ffuf file: %v", err)
+	}
+
+	if result.Parser != "ffuf-json" {
+		t.Fatalf("expected ffuf-json parser, got %q", result.Parser)
+	}
+	if len(result.CompatibleParsers) != 1 || result.CompatibleParsers[0] != "ffuf-json" {
+		t.Fatalf("expected compatible parser list, got %#v", result.CompatibleParsers)
+	}
+
+	parsed, ok := result.Data.(parsers.FFUFResult)
+	if !ok {
+		t.Fatalf("expected FFUFResult, got %T", result.Data)
+	}
+	if len(parsed.Results) != 2 {
+		t.Fatalf("expected 2 results, got %d", len(parsed.Results))
+	}
+}
+
 func TestParseNoCompatibleParser(t *testing.T) {
 	_, err := parsex.Parse("not a supported tool output", nil)
 	if !errors.Is(err, parsex.ErrNoCompatibleParser) {
@@ -207,7 +229,7 @@ func TestParseFileReadError(t *testing.T) {
 }
 
 func TestDefaultParserNamesUseDashFormat(t *testing.T) {
-	expectedNames := []string{"nmap-xml", "nmap-grepable", "nmap-standard", "nuclei-json", "nuclei-standard"}
+	expectedNames := []string{"nmap-xml", "nmap-grepable", "nmap-standard", "nuclei-json", "nuclei-standard", "ffuf-json", "ffuf-standard"}
 	parsers := parsex.DefaultParsers()
 	if len(parsers) != len(expectedNames) {
 		t.Fatalf("expected %d default parsers, got %d", len(expectedNames), len(parsers))

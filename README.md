@@ -30,6 +30,7 @@ This is the current list of compatible tools:
 
 - nmap (`nmap-standard`, `nmap-xml`, `nmap-grepable`)
 - nuclei (`nuclei-standard`, `nuclei-json` for JSON and JSONL output)
+- ffuf (`ffuf-standard`, `ffuf-json` for JSON and JSONL output)
 
 ## 📚 Usage
 
