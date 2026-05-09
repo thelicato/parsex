@@ -95,6 +95,17 @@ func main() {
 }
 ```
 
+## Parser Validation
+
+Generated parser samples can be validated locally with:
+
+```
+scripts/validate-generated-samples.sh
+```
+
+The GitHub workflow runs the same script on every push. The script requires
+`nmap`, `ffuf`, and `nuclei` to generate fresh tool samples.
+
 ## 🚀 Installation
 
 Run the following command to install the latest version:
