@@ -210,7 +210,7 @@ generate_subfinder_samples() {
   local domains="$tmp_dir/subfinder-domains.txt"
   printf 'github.com\n' > "$domains"
 
-  if ! subfinder -silent -json -sources crtsh -d github.com -timeout 15 -duc > "$tmp_dir/subfinder-json" 2>"$tmp_dir/subfinder-json.err"; then
+  if ! subfinder -silent -json -d github.com -timeout 30 -duc > "$tmp_dir/subfinder-json" 2>"$tmp_dir/subfinder-json.err"; then
     sed -n '1,80p' "$tmp_dir/subfinder-json.err" >&2
     fail "subfinder failed to generate JSON sample"
   fi
@@ -218,7 +218,7 @@ generate_subfinder_samples() {
     fail "subfinder JSON sample is empty"
   fi
 
-  if ! subfinder -silent -sources crtsh -d github.com -timeout 15 -duc > "$tmp_dir/subfinder-standard" 2>"$tmp_dir/subfinder-standard.err"; then
+  if ! subfinder -silent -d github.com -timeout 30 -duc > "$tmp_dir/subfinder-standard" 2>"$tmp_dir/subfinder-standard.err"; then
     sed -n '1,80p' "$tmp_dir/subfinder-standard.err" >&2
     fail "subfinder failed to generate standard sample"
   fi
