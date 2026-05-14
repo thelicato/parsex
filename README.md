@@ -30,6 +30,7 @@ This is the current list of compatible tools:
 
 - nmap (`nmap-standard`, `nmap-xml`, `nmap-grepable`)
 - nuclei (`nuclei-standard`, `nuclei-json` for JSON and JSONL output)
+- ffuf (`ffuf-standard`, `ffuf-json` for JSON and JSONL output)
 
 ## 📚 Usage
 
@@ -93,6 +94,17 @@ func main() {
 	fmt.Printf("parser=%s data=%#v\n", result.Parser, result.Data)
 }
 ```
+
+## Parser Validation
+
+Generated parser samples can be validated locally with:
+
+```
+scripts/validate-generated-samples.sh
+```
+
+The GitHub workflow runs the same script on every push. The script requires
+`nmap`, `ffuf`, and `nuclei` to generate fresh tool samples.
 
 ## 🚀 Installation
 

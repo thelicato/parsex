@@ -1,0 +1,5 @@
+:: Method           : GET
+:: URL              : https://example.com/FUZZ
+
+admin                   [Status: 200, Size: 1234, Words: 120, Lines: 30, Duration: 42ms]
+login                   [Status: 302, Size: 0, Words: 0, Lines: 0, Duration: 39ms]

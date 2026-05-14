@@ -7,7 +7,7 @@ import (
 	"github.com/thelicato/parsex/internal/cli"
 )
 
-var version = "0.1.0"
+var version = "0.1.1"
 
 func main() {
 	if err := cli.Execute(version); err != nil {

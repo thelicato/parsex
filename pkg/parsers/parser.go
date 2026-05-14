@@ -15,5 +15,7 @@ func DefaultParsers() []Parser {
 		StandardNmapParser{},
 		NucleiJSONParser{},
 		NucleiStandardParser{},
+		FFUFJSONParser{},
+		FFUFStandardParser{},
 	}
 }
