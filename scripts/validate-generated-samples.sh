@@ -203,6 +203,30 @@ generate_gobuster_samples() {
   fi
 }
 
+generate_subfinder_samples() {
+  require_tool subfinder
+
+  log "generating subfinder samples with subfinder"
+  local domains="$tmp_dir/subfinder-domains.txt"
+  printf 'github.com\n' > "$domains"
+
+  if ! subfinder -silent -json -sources crtsh -d github.com -timeout 15 -duc > "$tmp_dir/subfinder-json" 2>"$tmp_dir/subfinder-json.err"; then
+    sed -n '1,80p' "$tmp_dir/subfinder-json.err" >&2
+    fail "subfinder failed to generate JSON sample"
+  fi
+  if [[ ! -s "$tmp_dir/subfinder-json" ]]; then
+    fail "subfinder JSON sample is empty"
+  fi
+
+  if ! subfinder -silent -sources crtsh -d github.com -timeout 15 -duc > "$tmp_dir/subfinder-standard" 2>"$tmp_dir/subfinder-standard.err"; then
+    sed -n '1,80p' "$tmp_dir/subfinder-standard.err" >&2
+    fail "subfinder failed to generate standard sample"
+  fi
+  if [[ ! -s "$tmp_dir/subfinder-standard" ]]; then
+    fail "subfinder standard sample is empty"
+  fi
+}
+
 validate_sample() {
   local parser="$1"
   local sample="$2"
@@ -232,6 +256,7 @@ generate_nmap_samples
 generate_nuclei_samples
 generate_ffuf_samples
 generate_gobuster_samples
+generate_subfinder_samples
 
 validate_sample nmap-standard "$tmp_dir/nmap-standard"
 validate_sample nmap-xml "$tmp_dir/nmap-xml"
@@ -241,5 +266,7 @@ validate_sample nuclei-json "$tmp_dir/nuclei-json"
 validate_sample nuclei-standard "$tmp_dir/nuclei-standard"
 validate_sample ffuf-json "$tmp_dir/ffuf-json"
 validate_sample ffuf-standard "$tmp_dir/ffuf-standard"
+validate_sample subfinder-json "$tmp_dir/subfinder-json"
+validate_sample subfinder-standard "$tmp_dir/subfinder-standard"
 
 log "all generated parser samples validated"

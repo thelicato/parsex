@@ -29,6 +29,7 @@ jobs:
           go install github.com/ffuf/ffuf/v2@latest
           go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
           go install github.com/OJ/gobuster/v3@latest
+          go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
 
       - name: Run tests

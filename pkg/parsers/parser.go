@@ -18,5 +18,7 @@ func DefaultParsers() []Parser {
 		FFUFJSONParser{},
 		FFUFStandardParser{},
 		GobusterStandardParser{},
+		SubfinderJSONParser{},
+		SubfinderStandardParser{},
 	}
 }

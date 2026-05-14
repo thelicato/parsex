@@ -229,7 +229,7 @@ func TestParseFileReadError(t *testing.T) {
 }
 
 func TestDefaultParserNamesUseDashFormat(t *testing.T) {
-	expectedNames := []string{"nmap-xml", "nmap-grepable", "nmap-standard", "nuclei-json", "nuclei-standard", "ffuf-json", "ffuf-standard", "gobuster-standard"}
+	expectedNames := []string{"nmap-xml", "nmap-grepable", "nmap-standard", "nuclei-json", "nuclei-standard", "ffuf-json", "ffuf-standard", "gobuster-standard", "subfinder-json", "subfinder-standard"}
 	parsers := parsex.DefaultParsers()
 	if len(parsers) != len(expectedNames) {
 		t.Fatalf("expected %d default parsers, got %d", len(expectedNames), len(parsers))
