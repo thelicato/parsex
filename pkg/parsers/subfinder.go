@@ -56,7 +56,7 @@ func (p SubfinderStandardParser) Parse(content string) (interface{}, error) {
 	return SubfinderResult{Findings: findings}, nil
 }
 
-var subfinderHostRegexp = regexp.MustCompile(`^[a-zA-Z0-9](?:[a-zA-Z0-9_-]*\.)+[a-zA-Z0-9_-]+$`)
+var subfinderHostRegexp = regexp.MustCompile(`^[a-zA-Z0-9_](?:[a-zA-Z0-9_-]*\.)+[a-zA-Z0-9_-]+$`)
 
 func parseSubfinderJSON(content string) ([]SubfinderFinding, error) {
 	content = strings.TrimSpace(strings.TrimPrefix(content, "\ufeff"))
