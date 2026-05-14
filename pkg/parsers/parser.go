@@ -17,5 +17,6 @@ func DefaultParsers() []Parser {
 		NucleiStandardParser{},
 		FFUFJSONParser{},
 		FFUFStandardParser{},
+		GobusterStandardParser{},
 	}
 }

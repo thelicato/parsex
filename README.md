@@ -104,7 +104,7 @@ scripts/validate-generated-samples.sh
 ```
 
 The GitHub workflow runs the same script on every push. The script requires
-`nmap`, `ffuf`, and `nuclei` to generate fresh tool samples.
+`nmap`, `ffuf`, `nuclei`, and `gobuster` to generate fresh tool samples.
 
 ## 🚀 Installation
 

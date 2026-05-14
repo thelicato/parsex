@@ -186,6 +186,23 @@ generate_ffuf_samples() {
   fi
 }
 
+generate_gobuster_samples() {
+  require_tool gobuster
+  start_fixture_server
+
+  log "generating gobuster samples with gobuster"
+  local wordlist="$tmp_dir/gobuster-wordlist.txt"
+  printf 'generated\n' > "$wordlist"
+
+  if ! gobuster dir -u "$fixture_url" -w "$wordlist" -q --no-progress --no-color -t 1 --output "$tmp_dir/gobuster-standard" >/dev/null 2>"$tmp_dir/gobuster-standard.err"; then
+    sed -n '1,80p' "$tmp_dir/gobuster-standard.err" >&2
+    fail "gobuster failed to generate standard sample"
+  fi
+  if [[ ! -s "$tmp_dir/gobuster-standard" ]]; then
+    fail "gobuster standard sample is empty"
+  fi
+}
+
 validate_sample() {
   local parser="$1"
   local sample="$2"
@@ -214,10 +231,12 @@ log "generating fresh parser samples in $tmp_dir"
 generate_nmap_samples
 generate_nuclei_samples
 generate_ffuf_samples
+generate_gobuster_samples
 
 validate_sample nmap-standard "$tmp_dir/nmap-standard"
 validate_sample nmap-xml "$tmp_dir/nmap-xml"
 validate_sample nmap-grepable "$tmp_dir/nmap-grepable"
+validate_sample gobuster-standard "$tmp_dir/gobuster-standard"
 validate_sample nuclei-json "$tmp_dir/nuclei-json"
 validate_sample nuclei-standard "$tmp_dir/nuclei-standard"
 validate_sample ffuf-json "$tmp_dir/ffuf-json"
