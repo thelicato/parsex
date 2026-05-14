@@ -54,9 +54,7 @@ func parseGobusterStandard(content string) []GobusterFinding {
 		if line == "" {
 			continue
 		}
-		if strings.HasPrefix(line, "Found: ") {
-			line = strings.TrimPrefix(line, "Found: ")
-		}
+		line = strings.TrimPrefix(line, "Found: ")
 
 		matches := gobusterStandardLineRegexp.FindStringSubmatch(line)
 		if len(matches) == 0 {
